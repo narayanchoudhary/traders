@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { Container, Row, Col } from 'reactstrap';
+import { Switch, Route, withRouter } from 'react-router-dom';
 import Header from './components/Navbar';
 import './App.css';
 
@@ -8,13 +8,11 @@ class App extends Component {
     return (
       <Fragment>
         <Header />
-        <Container>
-          <Row>
-            <Col>
-              Hello world
-            </Col>
-          </Row>
-        </Container>
+        <Switch>
+          <Route exact={true} path='/' component={Home} />
+          <Route path='/masters/addresses' component={Addresses} />
+        </Switch>
+
       </Fragment>
     );
   }
