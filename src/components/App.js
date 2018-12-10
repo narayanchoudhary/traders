@@ -1,7 +1,9 @@
 import React, { Component, Fragment } from 'react';
-import { Switch, Route, withRouter } from 'react-router-dom';
-import Header from './components/Navbar';
-import './App.css';
+import { Switch, Route } from 'react-router-dom';
+import  Addresses from './Addresses';
+import  Home from './Home';
+import Header from './Header';
+import '../css/App.css';
 
 class App extends Component {
   render() {

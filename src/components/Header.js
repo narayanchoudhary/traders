@@ -1,4 +1,6 @@
 import React, { Fragment } from 'react';
+import { NavLink as RRNavLink, Redirect } from 'react-router-dom';
+import * as classes from '../css/Header.module.css';
 import {
     Collapse,
     Navbar,
@@ -19,7 +21,8 @@ export default class Header extends React.Component {
 
         this.toggle = this.toggle.bind(this);
         this.state = {
-            isOpen: false
+            isOpen: false,
+            redirectToHome: false,
         };
     }
     toggle() {
@@ -27,11 +30,20 @@ export default class Header extends React.Component {
             isOpen: !this.state.isOpen
         });
     }
+
+    redirectToHome = (e) => {
+        e.stopPropagation();
+        this.setState({ redirectToHome: true });
+    }
+
     render() {
         return (
             <Fragment>
-                <Navbar dark fixed="top" color="primary" expand="md">
-                    <NavbarBrand href="/">Hariom Traders</NavbarBrand>
+                {this.state.redirectToHome && <Redirect to="/" />}
+                <Navbar dark fixed="top" color="primary" expand="md" className={classes.header}>
+                    <NavbarBrand tag={RRNavLink} to="/">
+                            Hariom Traders
+                    </NavbarBrand>
                     <NavbarToggler onClick={this.toggle} />
                     <Collapse isOpen={this.state.isOpen} navbar>
                         <Nav className="ml-auto" navbar>
@@ -46,11 +58,11 @@ export default class Header extends React.Component {
                                     Master
                                 </DropdownToggle>
                                 <DropdownMenu right>
-                                    <DropdownItem>
-                                        Address
+                                    <DropdownItem tag={RRNavLink} to="/masters/addresses">
+                                            Address
                                     </DropdownItem>
-                                    <DropdownItem>
-                                        Item
+                                    <DropdownItem tag={RRNavLink}  to="/masters/items">
+                                            Item
                                     </DropdownItem>
                                     <DropdownItem divider />
                                     <DropdownItem>

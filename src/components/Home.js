@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 
-class Addresses extends Component {
+class Home extends Component {
     render() {
         return (
             <div>
-               Nothing here 
+                Nothing here too
             </div>
         );
     }
 }
 
-export default Addresses;
+export default Home;
