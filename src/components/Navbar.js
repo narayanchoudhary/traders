@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import {
     Collapse,
     Navbar,
@@ -13,7 +13,7 @@ import {
     DropdownItem
 } from 'reactstrap';
 
-export default class Example extends React.Component {
+export default class Header extends React.Component {
     constructor(props) {
         super(props);
 
@@ -29,8 +29,8 @@ export default class Example extends React.Component {
     }
     render() {
         return (
-            <div>
-                <Navbar dark color="primary" expand="md">
+            <Fragment>
+                <Navbar dark fixed="top" color="primary" expand="md">
                     <NavbarBrand href="/">Hariom Traders</NavbarBrand>
                     <NavbarToggler onClick={this.toggle} />
                     <Collapse isOpen={this.state.isOpen} navbar>
@@ -61,7 +61,7 @@ export default class Example extends React.Component {
                         </Nav>
                     </Collapse>
                 </Navbar>
-            </div>
+            </Fragment>
         );
     }
 }
