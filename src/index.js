@@ -4,6 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import './index.css';
 import App from './components/App';
 import 'bootstrap/dist/css/bootstrap.css';
+import "react-table/react-table.css";
 
 let app = <BrowserRouter>
     <App />
