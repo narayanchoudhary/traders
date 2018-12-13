@@ -3,6 +3,7 @@ import ReactTable from "react-table";
 import { Container, Button } from "reactstrap";
 import PageHeading from './PageHeading';
 import classes from '../css/Addresses.module.css';
+import ModalExample from './AddressNew';
 
 class Addresses extends Component {
     state = {
@@ -14,7 +15,14 @@ class Addresses extends Component {
             { name: "Sirpur" },
             { name: "Xavier" },
             { name: "Zameen" },
-        ]
+        ],
+        isModalOpen: false // New Address Modal
+    }
+
+    toggle = () => {
+        this.setState({
+            isModalOpen: !this.state.isModalOpen
+        });
     }
 
     renderEditable = (cellInfo) => {
@@ -63,7 +71,8 @@ class Addresses extends Component {
                             defaultPageSize={10}
                             className="-striped -highlight"
                         />
-                        <Button outline className="mt-2" block color="primary" >Add</Button>
+                        <Button autoFocus outline className="mt-2" block color="primary" onClick={this.toggle} >New Address</Button>
+                        <ModalExample isModalOpen={this.state.isModalOpen} toggle={this.toggle} />
                     </div>
                 </div>
             </Container>
