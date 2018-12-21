@@ -3,20 +3,20 @@ import ReactTable from "react-table";
 import { Container, Button } from "reactstrap";
 import PageHeading from './PageHeading';
 import classes from '../css/Addresses.module.css';
-import ModalExample from './AddressNew';
+import AddressNew from './AddressNew';
+const remote = window.require("electron").remote;
+const addressesDB = remote.getGlobal('addressesDB');
 
 class Addresses extends Component {
     state = {
-        data: [
-            { name: "Dharawara" },
-            { name: "Dhannad" },
-            { name: "Machal" },
-            { name: "Orangpura" },
-            { name: "Sirpur" },
-            { name: "Xavier" },
-            { name: "Zameen" },
-        ],
+        addresses: [],
         isModalOpen: false // New Address Modal
+    }
+
+    handleDelete(id) {
+        addressesDB.remove({ _id: id }, {}, (err, numRemoved) => {
+            this.getAddresses();
+        });
     }
 
     toggle = () => {
@@ -25,23 +25,42 @@ class Addresses extends Component {
         });
     }
 
+    handleEdit = (id, value) => {
+        addressesDB.update({ _id: id }, { address: value }, () => {
+            this.getAddresses();
+        });
+    }
+
     renderEditable = (cellInfo) => {
         return (
-            <div
-
-                className={classes.renderEditable}
-                contentEditable
-                suppressContentEditableWarning
-                onBlur={e => {
-                    const data = [...this.state.data];
-                    data[cellInfo.index][cellInfo.column.id] = e.target.innerHTML;
-                    this.setState({ data });
-                }}
-                dangerouslySetInnerHTML={{
-                    __html: this.state.data[cellInfo.index][cellInfo.column.id]
-                }}
-            />
+            <div className={classes.wrapper}>
+                <div
+                    className={classes.renderEditable}
+                    contentEditable
+                    suppressContentEditableWarning
+                    onBlur={e => {
+                        const addresses = [...this.state.addresses];
+                        addresses[cellInfo.index][cellInfo.column.id] = e.target.innerHTML;
+                        this.setState({ addresses });
+                        this.handleEdit(cellInfo.row._id, e.target.innerHTML);
+                    }}
+                    dangerouslySetInnerHTML={{
+                        __html: this.state.addresses[cellInfo.index][cellInfo.column.id]
+                    }}
+                />
+                <Button className={classes.deleteButton} close onClick={() => this.handleDelete(cellInfo.row._id)} ></Button>
+            </div>
         );
+    }
+
+    componentDidMount() {
+        this.getAddresses();
+    }
+
+    getAddresses = () => {
+        addressesDB.find({}).sort({ createdAt: -1 }).exec((err, addresses) => {
+            this.setState({ ...this.state, addresses: addresses })
+        });
     }
 
     render() {
@@ -51,11 +70,11 @@ class Addresses extends Component {
                 <div className="d-flex justify-content-center align-items-center">
                     <div>
                         <ReactTable
-                            data={this.state.data}
+                            data={this.state.addresses}
                             columns={[
                                 {
-                                    Header: "Name",
-                                    accessor: "name",
+                                    Header: "Address",
+                                    accessor: "address",
                                     Cell: this.renderEditable,
                                     filterable: true,
                                     filterMethod: (filter, row) => {
@@ -64,6 +83,11 @@ class Addresses extends Component {
                                         return cell.startsWith(filterValue) || cell.endsWith(filterValue);
                                     }
                                 },
+                                {
+                                    Header: "id",
+                                    accessor: "_id",
+                                    show: false
+                                }
                             ]}
                             style={{
                                 height: "500px" // This will force the table body to overflow and scroll, since there is not enough room
@@ -72,7 +96,11 @@ class Addresses extends Component {
                             className="-striped -highlight"
                         />
                         <Button autoFocus outline className="mt-2" block color="primary" onClick={this.toggle} >New Address</Button>
-                        <ModalExample isModalOpen={this.state.isModalOpen} toggle={this.toggle} />
+                        <AddressNew
+                            isModalOpen={this.state.isModalOpen}
+                            toggle={this.toggle}
+                            getAddresses={this.getAddresses}
+                        />
                     </div>
                 </div>
             </Container>

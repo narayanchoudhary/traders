@@ -1,21 +1,71 @@
-import React from 'react';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label, Input } from 'reactstrap';
+import React, { Fragment } from 'react';
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label, Input, FormFeedback, FormText } from 'reactstrap';
+import { Field, reduxForm } from 'redux-form';
+import classes from '../css/AddressNew.module.css';
+const remote = window.require("electron").remote;
+const addressesDB = remote.getGlobal('addressesDB');
+
+const renderField = ({ input, label, type, autoFocus, meta: { touched, invalid, valid, error } }) => {
+    return (
+        <Fragment>
+            <Label>{label}</Label>
+            <Input
+                {...input}
+                type={type}
+                autoFocus={autoFocus}
+                invalid={touched && invalid}
+                valid={touched && valid}
+                className={classes.newAddressInput}
+            />
+            {(error && <FormFeedback>{error}</FormFeedback>)}
+            <FormText>Enter address</FormText>
+        </Fragment>
+    )
+}
+
+const validate = values => {
+    const errors = {}
+    if (!values.address) {
+        errors.address = 'Required'
+    } else if (values.address.length > 20) {
+        errors.address = 'Must be 15 characters or less'
+    }
+    return errors
+}
+
 
 class AddressNew extends React.Component {
+
+    onSubmit = (values) => {
+        addressesDB.insert({ address: values.address.toLowerCase() }, (err, newDoc) => {
+            this.props.toggle();
+            this.props.getAddresses();
+        });
+        this.props.reset();
+        this.props.destroy(); 
+    }
+
     render() {
+        const { handleSubmit, submitting } = this.props;
         return (
             <div>
-                <Modal fade={true} isOpen={this.props.isModalOpen} toggle={this.props.toggle} centered >
+                <Modal fade={true} isOpen={this.props.isModalOpen} toggle={this.props.toggle} centered autoFocus={false} >
                     <ModalHeader toggle={this.props.toggle}>New Address</ModalHeader>
-                    <Form>
+                    <Form onSubmit={handleSubmit(this.onSubmit)}>
                         <ModalBody>
                             <FormGroup>
-                                <Label for="name">Name</Label>
-                                <Input type="text" name="name" placeholder="Enter Address" />
+                                <Field
+                                    name="address"
+                                    component={renderField}
+                                    type="text"
+                                    placeholder="Enter Address"
+                                    lebel="Address"
+                                    autoFocus
+                                />
                             </FormGroup>
                         </ModalBody>
                         <ModalFooter>
-                            <Button color="success" onClick={this.props.toggle}>Save</Button>{' '}
+                            <Button color="success" type="submit" disabled={submitting} >Save</Button>{' '}
                             <Button color="secondary" onClick={this.props.toggle}>Cancel</Button>
                         </ModalFooter>
                     </Form>
@@ -25,4 +75,7 @@ class AddressNew extends React.Component {
     }
 }
 
-export default AddressNew;
+export default reduxForm({
+    form: 'simple',
+    validate  // a unique identifier for this form
+})(AddressNew)
