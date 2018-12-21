@@ -1,9 +1,9 @@
 import React, { Fragment } from 'react';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label, Input, FormFeedback, FormText } from 'reactstrap';
 import { Field, reduxForm } from 'redux-form';
-import classes from '../css/AddressNew.module.css';
+import classes from '../css/ItemNew.module.css';
 const remote = window.require("electron").remote;
-const addressesDB = remote.getGlobal('addressesDB');
+const itemsDB = remote.getGlobal('itemsDB');
 
 const renderField = ({ input, label, type, autoFocus, meta: { touched, invalid, valid, error } }) => {
     return (
@@ -15,31 +15,31 @@ const renderField = ({ input, label, type, autoFocus, meta: { touched, invalid, 
                 autoFocus={autoFocus}
                 invalid={touched && invalid}
                 valid={touched && valid}
-                className={classes.newAddressInput}
+                className={classes.newItemInput}
             />
             {(error && <FormFeedback>{error}</FormFeedback>)}
-            <FormText>Enter address</FormText>
+            <FormText>Enter item</FormText>
         </Fragment>
     )
 }
 
 const validate = values => {
     const errors = {}
-    if (!values.address) {
-        errors.address = 'Required'
-    } else if (values.address.length > 20) {
-        errors.address = 'Must be 15 characters or less'
+    if (!values.item) {
+        errors.item = 'Required'
+    } else if (values.item.length > 20) {
+        errors.item = 'Must be 15 characters or less'
     }
     return errors
 }
 
 
-class AddressNew extends React.Component {
+class ItemNew extends React.Component {
 
     onSubmit = (values) => {
-        addressesDB.insert({ address: values.address.toLowerCase() }, (err, newDoc) => {
+        itemsDB.insert({ item: values.item.toLowerCase() }, (err, newDoc) => {
             this.props.toggle();
-            this.props.getAddresses();
+            this.props.getItems();
         });
         this.props.reset();
         this.props.destroy(); 
@@ -50,16 +50,16 @@ class AddressNew extends React.Component {
         return (
             <div>
                 <Modal fade={true} isOpen={this.props.isModalOpen} toggle={this.props.toggle} centered autoFocus={false} >
-                    <ModalHeader toggle={this.props.toggle}>New Address</ModalHeader>
+                    <ModalHeader toggle={this.props.toggle}>New Item</ModalHeader>
                     <Form onSubmit={handleSubmit(this.onSubmit)}>
                         <ModalBody>
                             <FormGroup>
                                 <Field
-                                    name="address"
+                                    name="item"
                                     component={renderField}
                                     type="text"
-                                    placeholder="Enter Address"
-                                    lebel="Address"
+                                    placeholder="Enter Item"
+                                    lebel="Item"
                                     autoFocus
                                 />
                             </FormGroup>
@@ -76,6 +76,6 @@ class AddressNew extends React.Component {
 }
 
 export default reduxForm({
-    form: 'newAddress',
+    form: 'newItem',
     validate  // a unique identifier for this form
-})(AddressNew)
+})(ItemNew)
