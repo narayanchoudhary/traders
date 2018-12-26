@@ -132,7 +132,6 @@ class Parties extends Component {
                                             value={filter ? filter.value : ''}
                                             style={{
                                                 width: '100%',
-                                                color: 'white',
                                                 textTransform: 'capitalize',
                                             }}
                                         />

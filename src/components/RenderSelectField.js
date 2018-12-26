@@ -4,7 +4,6 @@ import { Label, FormFeedback, FormGroup } from 'reactstrap';
 import classes from '../css/RenderSelectField.module.css';
 
 const renderSelectField = ({ input, label, type, options, plusButton, meta: { touched, invalid, valid, error } }) => {
-    console.log('error: ', error);
     return (
         <FormGroup>
             <Label>{label}</Label>
