@@ -1,0 +1,13 @@
+/* Add a wrapper on react select and add a plus button for the new address */
+.selectWrapper {
+    display: flex;
+    justify-content: space-between;
+}
+
+.selectWrapper > div {
+    width: stretch;
+}
+
+.reactSelectField {
+    text-transform: capitalize;
+}

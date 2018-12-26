@@ -3,19 +3,16 @@ import ReactTable from "react-table";
 import { Container, Button } from "reactstrap";
 import PageHeading from './PageHeading';
 import classes from '../css/Addresses.module.css';
-import AddressNew from './AddressNew';
+import { toggleNewAddressModal, fetchAddresses } from '../store/actions/Address';
+import { connect } from 'react-redux';
 const remote = window.require("electron").remote;
 const addressesDB = remote.getGlobal('addressesDB');
 
 class Addresses extends Component {
-    state = {
-        addresses: [],
-        isModalOpen: false // New Address Modal
-    }
 
     handleDelete(id) {
         addressesDB.remove({ _id: id }, {}, (err, numRemoved) => {
-            this.getAddresses();
+            this.props.fetchAddresses();
         });
     }
 
@@ -27,7 +24,7 @@ class Addresses extends Component {
 
     handleEdit = (id, value) => {
         addressesDB.update({ _id: id }, { address: value }, () => {
-            this.getAddresses();
+            this.props.fetchAddresses();
         });
     }
 
@@ -38,14 +35,9 @@ class Addresses extends Component {
                     className={classes.renderEditable}
                     contentEditable
                     suppressContentEditableWarning
-                    onBlur={e => {
-                        const addresses = [...this.state.addresses];
-                        addresses[cellInfo.index][cellInfo.column.id] = e.target.innerHTML;
-                        this.setState({ addresses });
-                        this.handleEdit(cellInfo.row._id, e.target.innerHTML);
-                    }}
+                    onBlur={e => this.handleEdit(cellInfo.row._id, e.target.innerHTML)}
                     dangerouslySetInnerHTML={{
-                        __html: this.state.addresses[cellInfo.index][cellInfo.column.id]
+                        __html: this.props.addresses[cellInfo.index][cellInfo.column.id]
                     }}
                 />
                 <Button className={classes.deleteButton} close onClick={() => this.handleDelete(cellInfo.row._id)} ></Button>
@@ -54,13 +46,7 @@ class Addresses extends Component {
     }
 
     componentDidMount() {
-        this.getAddresses();
-    }
-
-    getAddresses = () => {
-        addressesDB.find({}).sort({ createdAt: -1 }).exec((err, addresses) => {
-            this.setState({ ...this.state, addresses: addresses })
-        });
+        this.props.fetchAddresses();
     }
 
     render() {
@@ -70,7 +56,7 @@ class Addresses extends Component {
                 <div className="d-flex justify-content-center align-items-center">
                     <div>
                         <ReactTable
-                            data={this.state.addresses}
+                            data={this.props.addresses}
                             columns={[
                                 {
                                     Header: "Address",
@@ -95,12 +81,7 @@ class Addresses extends Component {
                             defaultPageSize={10}
                             className="-striped -highlight"
                         />
-                        <Button autoFocus outline className="mt-2" block color="primary" onClick={this.toggle} >New Address</Button>
-                        <AddressNew
-                            isModalOpen={this.state.isModalOpen}
-                            toggle={this.toggle}
-                            getAddresses={this.getAddresses}
-                        />
+                        <Button autoFocus outline className="mt-2" block color="primary" onClick={this.props.toggleNewAddressModal} >New Address</Button>
                     </div>
                 </div>
             </Container>
@@ -108,4 +89,17 @@ class Addresses extends Component {
     }
 }
 
-export default Addresses;
+const mapStateToProps = state => {
+    return {
+        addresses: state.address.addresses,
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        toggleNewAddressModal: () => dispatch(toggleNewAddressModal),
+        fetchAddresses: () => dispatch(fetchAddresses)
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Addresses);

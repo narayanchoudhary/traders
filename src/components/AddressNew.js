@@ -1,7 +1,9 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, Component } from 'react';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label, Input, FormFeedback, FormText } from 'reactstrap';
 import { Field, reduxForm } from 'redux-form';
 import classes from '../css/AddressNew.module.css';
+import { connect } from 'react-redux';
+import { toggleNewAddressModal, fetchAddresses } from '../store/actions/Address';
 const remote = window.require("electron").remote;
 const addressesDB = remote.getGlobal('addressesDB');
 
@@ -33,16 +35,15 @@ const validate = values => {
     return errors
 }
 
-
-class AddressNew extends React.Component {
+class AddressNew extends Component {
 
     onSubmit = (values) => {
         addressesDB.insert({ address: values.address.toLowerCase() }, (err, newDoc) => {
             this.props.toggle();
-            this.props.getAddresses();
+            this.props.fetchAddresses();
         });
         this.props.reset();
-        this.props.destroy(); 
+        this.props.destroy();
     }
 
     render() {
@@ -75,7 +76,19 @@ class AddressNew extends React.Component {
     }
 }
 
-export default reduxForm({
-    form: 'newAddress',
-    validate  // a unique identifier for this form
-})(AddressNew)
+const newAddressForm = reduxForm({ form: 'newAddress', validate })(AddressNew);
+
+const mapStateToProps = state => {
+    return {
+        isModalOpen: state.address.isNewAddressModalOpen,
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        toggle: () => dispatch(toggleNewAddressModal),
+        fetchAddresses: () => dispatch(fetchAddresses)
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(newAddressForm);

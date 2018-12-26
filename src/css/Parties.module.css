@@ -1,0 +1,39 @@
+.renderEditable {
+    padding-left: 2px;
+    display: inline-block;
+    width: 100%;
+    text-transform: capitalize;
+}
+
+/* remove outline and generate a box shadow and radius */
+.renderEditable:focus {
+    outline: none;
+    box-shadow: 0px 0px 3px 0px rgba(0,0,0,0.75);
+    border-radius: 3px;
+}
+
+/* by default do not show delete button */
+.deleteButton {
+    visibility: hidden;
+}
+
+/* on hover over row show cross button */
+.wrapper:hover > .deleteButton {
+    visibility: visible;
+}
+
+/* Add space between the action icons */
+.actionColumnWrapper {
+    display: flex;
+    justify-content: space-around;
+}
+
+/* make cursor pointer on delete and edit button when hovered */
+.pointer {
+    cursor: pointer;
+}
+
+/* capitalize the party name and address */
+.capitalize {
+    text-transform: capitalize;
+}

@@ -48,10 +48,10 @@ export default class Header extends React.Component {
                     <Collapse isOpen={this.state.isOpen} navbar>
                         <Nav className="ml-auto" navbar>
                             <NavItem>
-                                <NavLink href="/components/">Party</NavLink>
+                                <NavLink>Purchase</NavLink>
                             </NavItem>
                             <NavItem>
-                                <NavLink>Purchase</NavLink>
+                                <NavLink>Sale</NavLink>
                             </NavItem>
                             <UncontrolledDropdown nav inNavbar>
                                 <DropdownToggle nav caret>
@@ -60,6 +60,9 @@ export default class Header extends React.Component {
                                 <DropdownMenu right>
                                     <DropdownItem tag={RRNavLink} to="/masters/addresses">
                                             Address
+                                    </DropdownItem>
+                                    <DropdownItem tag={RRNavLink}  to="/masters/parties">
+                                            Party
                                     </DropdownItem>
                                     <DropdownItem tag={RRNavLink}  to="/masters/items">
                                             Item

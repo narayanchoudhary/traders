@@ -5,3 +5,7 @@ html, body, #root {
 body { 
   padding-top: 65px; 
 }
+
+.ReactTable .rt-thead {
+  overflow-y: scroll;
+}
