@@ -42,16 +42,16 @@ export default class Header extends React.Component {
                 {this.state.redirectToHome && <Redirect to="/" />}
                 <Navbar dark fixed="top" color="primary" expand="md" className={classes.header}>
                     <NavbarBrand tag={RRNavLink} to="/">
-                            Hariom Traders
+                        Hariom Traders
                     </NavbarBrand>
                     <NavbarToggler onClick={this.toggle} />
                     <Collapse isOpen={this.state.isOpen} navbar>
                         <Nav className="ml-auto" navbar>
                             <NavItem>
-                                <NavLink>Purchase</NavLink>
+                                <NavLink tag={RRNavLink} to="/purchases">Purchase</NavLink>
                             </NavItem>
                             <NavItem>
-                                <NavLink>Sale</NavLink>
+                                <NavLink tag={RRNavLink} to="/sales">Sales</NavLink>
                             </NavItem>
                             <UncontrolledDropdown nav inNavbar>
                                 <DropdownToggle nav caret>
@@ -59,13 +59,13 @@ export default class Header extends React.Component {
                                 </DropdownToggle>
                                 <DropdownMenu right>
                                     <DropdownItem tag={RRNavLink} to="/masters/addresses">
-                                            Address
+                                        Address
                                     </DropdownItem>
-                                    <DropdownItem tag={RRNavLink}  to="/masters/parties">
-                                            Party
+                                    <DropdownItem tag={RRNavLink} to="/masters/parties">
+                                        Party
                                     </DropdownItem>
-                                    <DropdownItem tag={RRNavLink}  to="/masters/items">
-                                            Item
+                                    <DropdownItem tag={RRNavLink} to="/masters/items">
+                                        Item
                                     </DropdownItem>
                                     <DropdownItem divider />
                                     <DropdownItem>

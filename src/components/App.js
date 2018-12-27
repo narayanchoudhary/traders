@@ -6,6 +6,7 @@ import Parties from './Parties';
 import Home from './Home';
 import Header from './Header';
 import NewAddress from './AddressNew';
+import Purchases from './Purchases';
 
 class App extends Component {
   render() {
@@ -18,6 +19,7 @@ class App extends Component {
             <Route path='/masters/addresses' component={Addresses} />
             <Route path='/masters/items' component={Items} />
             <Route path='/masters/parties' component={Parties} />
+            <Route path='/purchases' component={Purchases} />
           </Switch>
       </Fragment>
     );
