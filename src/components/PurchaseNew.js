@@ -2,39 +2,23 @@ import React from 'react';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form } from 'reactstrap';
 import { Field, reduxForm, SubmissionError } from 'redux-form';
 import RenderSelectField from './RenderSelectField';
-import { fetchAddresses, toggleNewAddressModal } from '../store/actions/Addresses';
-import { fetchParty } from '../store/actions/Parties';
+import RenderInputField from './RenderInputField';
+import { toggleNewAddressModal, fetchAddresses } from '../store/actions/Addresses';
+import { fetchParties } from '../store/actions/Parties';
 import { connect } from 'react-redux';
 import PlusButton from './PlusButton';
-import RenderInputField from './RenderInputField';
-import { validateParty } from '../utils';
+import { validatePurchase } from '../utils';
+import renderInputField from './RenderInputField';
+
 const remote = window.require("electron").remote;
 const partiesDB = remote.getGlobal('partiesDB');
 
-class PartyEdit extends React.Component {
-
-    componentDidMount = () => {
-        this.props.fetchAddresses();
-        if (this.props.partyId) {
-            this.props.fetchParty(this.props.partyId, () => {
-            });
-        }
-    }
-
-    componentWillReceiveProps = (nextProps) => {
-        if (nextProps.partyId !== this.props.paryId) {
-            if (this.props.partyId) {
-                this.props.fetchParty(nextProps.partyId, () => {
-                });
-            }
-        }
-    }
-
+class PurchaseNew extends React.Component {
     onSubmit = (values) => {
         return new Promise((resolve, reject) => {
-            partiesDB.findOne({ partyName: values.partyName.toLowerCase(), address: values.address.value }, (err, party) => {
-                if (party === null) {
-                    partiesDB.update({ _id: this.props.partyId }, { partyName: values.partyName.toLowerCase(), address: values.address.value }, (err, editDoc) => {
+            partiesDB.findOne({ purchaseName: values.purchaseName.toLowerCase(), address: values.address.value }, (err, purchase) => {
+                if (purchase === null) {
+                    partiesDB.insert({ purchaseName: values.purchaseName.toLowerCase(), address: values.address.value }, (err, newDoc) => {
                         this.props.toggle();
                         this.props.getParties();
                         this.props.reset();
@@ -49,12 +33,10 @@ class PartyEdit extends React.Component {
 
         }).catch(() => {
             throw new SubmissionError({
-                partyName: 'Party already exists',
+                purchaseName: 'Purchase already exists',
                 _error: 'Save failed',
             });
         });
-
-
     }
 
     render() {
@@ -62,16 +44,30 @@ class PartyEdit extends React.Component {
         return (
             <div>
                 <Modal fade={true} isOpen={this.props.isModalOpen} toggle={this.props.toggle} centered autoFocus={false} >
-                    <ModalHeader toggle={this.props.toggle}>Edit Party</ModalHeader>
+                    <ModalHeader toggle={this.props.toggle}>New Purchase</ModalHeader>
                     <Form onSubmit={handleSubmit(this.onSubmit)}>
                         <ModalBody>
                             <Field
-                                name="partyName"
+                                name="purchaseName"
                                 component={RenderInputField}
                                 type="text"
-                                placeholder="Enter Party"
+                                placeholder="Enter Purchase"
                                 autoFocus
                                 label="Name"
+                            />
+                            <Field
+                                name="date"
+                                component={renderInputField}
+                                type="date"
+                                placeholder="Date"
+                                label="Date"
+                            />
+                            <Field
+                                name="store"
+                                component={RenderSelectField}
+                                placeholder="Select Store"
+                                options={this.props.storeOptions}
+                                label="Store"
                             />
                             <Field
                                 name="address"
@@ -81,9 +77,17 @@ class PartyEdit extends React.Component {
                                 label="Address"
                                 plusButton={() => <PlusButton onClick={this.props.toggleNewAddressModal} />}
                             />
+                            <Field
+                                name="party"
+                                component={RenderSelectField}
+                                placeholder="Select Party"
+                                options={this.props.partyOptions}
+                                label="Party"
+                                plusButton={() => <PlusButton onClick={this.props.toggleNewAddressModal} />}
+                            />
                         </ModalBody>
                         <ModalFooter>
-                            <Button color="success" type="submit" disabled={submitting} >Save Changes</Button>{' '}
+                            <Button color="success" type="submit" disabled={submitting} >Save</Button>{' '}
                             <Button color="secondary" onClick={this.props.toggle}>Cancel</Button>
                         </ModalFooter>
                     </Form>
@@ -93,21 +97,21 @@ class PartyEdit extends React.Component {
     }
 }
 
-const editPartyForm = reduxForm({ form: 'editParty', validate: validateParty, enableReinitialize: true })(PartyEdit);
+const newPurchaseForm = reduxForm({ form: 'newPurchase', validate: validatePurchase })(PurchaseNew);
 
 const mapStateToProps = state => {
     return {
         addressOptions: state.address.addressOptions,
-        initialValues: state.party.partyToBeEdited,
+        partyOptions: state.party.partyOptions
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        fetchParty: (partyId, thencallback) => dispatch(fetchParty(partyId, thencallback)),
         toggleNewAddressModal: () => dispatch(toggleNewAddressModal),
-        fetchAddresses: () => dispatch(fetchAddresses),
+        fetchAddress: () => dispatch(fetchAddresses),
+        fetchParties: () => dispatch(fetchParties),
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(editPartyForm);
+export default connect(mapStateToProps, mapDispatchToProps)(newPurchaseForm);

@@ -2,9 +2,20 @@ import React, { Component } from "react";
 import { Container, Button } from "reactstrap";
 import PageHeading from "./PageHeading";
 import ReactTable from "react-table";
-import classes from "../css/Purchases.module.css";
+import PurchaseNew from "./PurchaseNew";
 
 class Purchases extends Component {
+
+    state = {
+        isNewPurchaseModalOpen: false,
+    }
+
+    toggleNewPurchaseModal = () => {
+        this.setState({
+            isNewPurchaseModalOpen: !this.state.isNewPurchaseModalOpen,
+        });
+    }
+
     render() {
         return (
             <Container fluid>
@@ -54,8 +65,11 @@ class Purchases extends Component {
                             defaultPageSize={10}
                             className="-striped -highlight"
                         />
-                        <Button autoFocus outline className="mt-2" block color="primary" onClick={this.toggle} >New Purchase</Button>
-                        
+                        <Button autoFocus outline className="mt-2" block color="primary" onClick={this.toggleNewPurchaseModal} >New Purchase</Button>
+                        <PurchaseNew
+                            isModalOpen={this.state.isNewPurchaseModalOpen}
+                            toggle={this.toggleNewPurchaseModal}
+                        />
                     </div>
                 </div>
             </Container>

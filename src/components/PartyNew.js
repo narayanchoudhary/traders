@@ -3,7 +3,7 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form } from 'reacts
 import { Field, reduxForm, SubmissionError } from 'redux-form';
 import RenderSelectField from './RenderSelectField';
 import RenderInputField from './RenderInputField';
-import { toggleNewAddressModal, fetchAddresses } from '../store/actions/Address';
+import { toggleNewAddressModal, fetchAddresses } from '../store/actions/Addresses';
 import { connect } from 'react-redux';
 import PlusButton from './PlusButton';
 import { validateParty } from '../utils';

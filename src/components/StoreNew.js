@@ -1,11 +1,11 @@
 import React, { Fragment, Component } from 'react';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label, Input, FormFeedback, FormText } from 'reactstrap';
 import { Field, reduxForm } from 'redux-form';
-import classes from '../css/AddressNew.module.css';
+import classes from '../css/StoreNew.module.css';
 import { connect } from 'react-redux';
-import { toggleNewAddressModal, fetchAddresses } from '../store/actions/Addresses';
+import { toggleNewStoreModal, fetchStores } from '../store/actions/Stores';
 const remote = window.require("electron").remote;
-const addressesDB = remote.getGlobal('addressesDB');
+const storesDB = remote.getGlobal('storesDB');
 
 const renderField = ({ input, label, type, autoFocus, meta: { touched, invalid, valid, error } }) => {
     return (
@@ -17,30 +17,30 @@ const renderField = ({ input, label, type, autoFocus, meta: { touched, invalid, 
                 autoFocus={autoFocus}
                 invalid={touched && invalid}
                 valid={touched && valid}
-                className={classes.newAddressInput}
+                className={classes.newStoreInput}
             />
             {(error && <FormFeedback>{error}</FormFeedback>)}
-            <FormText>Enter address</FormText>
+            <FormText>Enter store</FormText>
         </Fragment>
     )
 }
 
 const validate = values => {
     const errors = {}
-    if (!values.address) {
-        errors.address = 'Required'
-    } else if (values.address.length > 20) {
-        errors.address = 'Must be 15 characters or less'
+    if (!values.store) {
+        errors.store = 'Required'
+    } else if (values.store.length > 20) {
+        errors.store = 'Must be 15 characters or less'
     }
     return errors
 }
 
-class AddressNew extends Component {
+class StoreNew extends Component {
 
     onSubmit = (values) => {
-        addressesDB.insert({ address: values.address.toLowerCase() }, (err, newDoc) => {
+        storesDB.insert({ store: values.store.toLowerCase() }, (err, newDoc) => {
             this.props.toggle();
-            this.props.fetchAddresses();
+            this.props.fetchStores();
         });
         this.props.reset();
         this.props.destroy();
@@ -51,16 +51,16 @@ class AddressNew extends Component {
         return (
             <div>
                 <Modal fade={true} isOpen={this.props.isModalOpen} toggle={this.props.toggle} centered autoFocus={false} >
-                    <ModalHeader toggle={this.props.toggle}>New Address</ModalHeader>
+                    <ModalHeader toggle={this.props.toggle}>New Store</ModalHeader>
                     <Form onSubmit={handleSubmit(this.onSubmit)}>
                         <ModalBody>
                             <FormGroup>
                                 <Field
-                                    name="address"
+                                    name="store"
                                     component={renderField}
                                     type="text"
-                                    placeholder="Enter Address"
-                                    lebel="Address"
+                                    placeholder="Enter Store"
+                                    lebel="Store"
                                     autoFocus
                                 />
                             </FormGroup>
@@ -76,19 +76,19 @@ class AddressNew extends Component {
     }
 }
 
-const newAddressForm = reduxForm({ form: 'newAddress', validate })(AddressNew);
+const newStoreForm = reduxForm({ form: 'newStore', validate })(StoreNew);
 
 const mapStateToProps = state => {
     return {
-        isModalOpen: state.address.isNewAddressModalOpen,
+        isModalOpen: state.store.isNewStoreModalOpen,
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        toggle: () => dispatch(toggleNewAddressModal),
-        fetchAddresses: () => dispatch(fetchAddresses)
+        toggle: () => dispatch(toggleNewStoreModal),
+        fetchStores: () => dispatch(fetchStores)
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(newAddressForm);
+export default connect(mapStateToProps, mapDispatchToProps)(newStoreForm);

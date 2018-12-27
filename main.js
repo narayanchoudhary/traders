@@ -5,6 +5,7 @@ const Datastore = require('nedb');
 global.addressesDB = new Datastore({ filename: 'database/addresses', autoload: true, timestampData: true });
 global.itemsDB = new Datastore({ filename: 'database/items', autoload: true, timestampData: true });
 global.partiesDB = new Datastore({ filename: 'database/parties', autoload: true, timestampData: true });
+global.storesDB = new Datastore({ filename: 'database/stores', autoload: true, timestampData: true });
 
 
 let mainWindow;

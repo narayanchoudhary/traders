@@ -6,7 +6,7 @@ import classes from '../css/Parties.module.css';
 import PartyNew from './PartyNew';
 import PartyEdit from './PartyEdit';
 import { connect } from 'react-redux';
-import { fetchAddresses } from '../store/actions/Address';
+import { fetchAddresses } from '../store/actions/Addresses';
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faEdit } from '@fortawesome/free-solid-svg-icons'
 import { faTrash } from '@fortawesome/free-solid-svg-icons'

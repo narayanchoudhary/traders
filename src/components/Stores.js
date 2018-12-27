@@ -2,17 +2,17 @@ import React, { Component } from 'react';
 import ReactTable from "react-table";
 import { Container, Button } from "reactstrap";
 import PageHeading from './PageHeading';
-import classes from '../css/Addresses.module.css';
-import { toggleNewAddressModal, fetchAddresses } from '../store/actions/Addresses';
+import classes from '../css/Stores.module.css';
+import { toggleNewStoreModal, fetchStores } from '../store/actions/Stores';
 import { connect } from 'react-redux';
 const remote = window.require("electron").remote;
-const addressesDB = remote.getGlobal('addressesDB');
+const storesDB = remote.getGlobal('storesDB');
 
-class Addresses extends Component {
+class Stores extends Component {
 
     handleDelete(id) {
-        addressesDB.remove({ _id: id }, {}, (err, numRemoved) => {
-            this.props.fetchAddresses();
+        storesDB.remove({ _id: id }, {}, (err, numRemoved) => {
+            this.props.fetchStores();
         });
     }
 
@@ -23,8 +23,8 @@ class Addresses extends Component {
     }
 
     handleEdit = (id, value) => {
-        addressesDB.update({ _id: id }, { address: value }, () => {
-            this.props.fetchAddresses();
+        storesDB.update({ _id: id }, { store: value }, () => {
+            this.props.fetchStores();
         });
     }
 
@@ -37,7 +37,7 @@ class Addresses extends Component {
                     suppressContentEditableWarning
                     onBlur={e => this.handleEdit(cellInfo.row._id, e.target.innerHTML)}
                     dangerouslySetInnerHTML={{
-                        __html: this.props.addresses[cellInfo.index][cellInfo.column.id]
+                        __html: this.props.stores[cellInfo.index][cellInfo.column.id]
                     }}
                 />
                 <Button className={classes.deleteButton} close onClick={() => this.handleDelete(cellInfo.row._id)} ></Button>
@@ -46,21 +46,21 @@ class Addresses extends Component {
     }
 
     componentDidMount() {
-        this.props.fetchAddresses();
+        this.props.fetchStores();
     }
 
     render() {
         return (
             <Container fluid>
-                <PageHeading>Addresses</PageHeading>
+                <PageHeading>Stores</PageHeading>
                 <div className="d-flex justify-content-center align-items-center">
                     <div>
                         <ReactTable
-                            data={this.props.addresses}
+                            data={this.props.stores}
                             columns={[
                                 {
-                                    Header: "Address",
-                                    accessor: "address",
+                                    Header: "Store",
+                                    accessor: "store",
                                     Cell: this.renderEditable,
                                     filterable: true,
                                     filterMethod: (filter, row) => {
@@ -81,7 +81,7 @@ class Addresses extends Component {
                             defaultPageSize={10}
                             className="-striped -highlight"
                         />
-                        <Button autoFocus outline className="mt-2" block color="primary" onClick={this.props.toggleNewAddressModal} >New Address</Button>
+                        <Button autoFocus outline className="mt-2" block color="primary" onClick={this.props.toggleNewStoreModal} >New Store</Button>
                     </div>
                 </div>
             </Container>
@@ -91,15 +91,15 @@ class Addresses extends Component {
 
 const mapStateToProps = state => {
     return {
-        addresses: state.address.addresses,
+        stores: state.store.stores,
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        toggleNewAddressModal: () => dispatch(toggleNewAddressModal),
-        fetchAddresses: () => dispatch(fetchAddresses)
+        toggleNewStoreModal: () => dispatch(toggleNewStoreModal),
+        fetchStores: () => dispatch(fetchStores)
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Addresses);
+export default connect(mapStateToProps, mapDispatchToProps)(Stores);

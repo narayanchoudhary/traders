@@ -9,14 +9,16 @@ import { Provider } from 'react-redux';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import { reducer as formReducer } from 'redux-form';
-import addressReducer from './store/reducers/Address';
-import partyReducer from './store/reducers/Party';
+import addressesReducer from './store/reducers/Addresses';
+import partiesReducer from './store/reducers/Parties';
+import storesReducer from './store/reducers/Stores';
 
     let store = createStore(
         combineReducers({
             form:    formReducer,
-            address: addressReducer,
-            party:   partyReducer,
+            address: addressesReducer,
+            party:   partiesReducer,
+            store:   storesReducer,
         }),
         applyMiddleware(thunk)
     );
