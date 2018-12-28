@@ -10,7 +10,7 @@ export const fetchParty = (partyId, thenCallback) => {
                     type: "FETCH_PARTY_TO_BE_EDITED",
                     payload: { partyName: party.partyName, address: { value: address._id, label: address.address } }
                 });
-                thenCallback();
+                thenCallback && thenCallback();
             });
         });
     }
@@ -19,9 +19,20 @@ export const fetchParty = (partyId, thenCallback) => {
 export const fetchParties = (thenCallback) => {
     return (dispatch) => {
         partiesDB.find({}, (err, parties) => {
-            addressesDB.find({}, (err, address) => {
-                
+            let partyOptions = [];
+            parties.forEach(party => {
+                partyOptions.push({
+                    value: party._id,
+                    label: party.partyName,
+                });
             });
+
+            console.log('partiesOptions: ', partyOptions);
+            dispatch({
+                type: "FETCH_PARTIES",
+                payload: { parties, partyOptions }
+            });
+            thenCallback && thenCallback();
         });
     }
 }

@@ -3,12 +3,11 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form } from 'reacts
 import { Field, reduxForm, SubmissionError } from 'redux-form';
 import RenderSelectField from './RenderSelectField';
 import RenderInputField from './RenderInputField';
-import { toggleNewAddressModal, fetchAddresses } from '../store/actions/Addresses';
+import { toggleNewAddressModal } from '../store/actions/Addresses';
 import { fetchParties } from '../store/actions/Parties';
 import { connect } from 'react-redux';
 import PlusButton from './PlusButton';
 import { validatePurchase } from '../utils';
-import renderInputField from './RenderInputField';
 
 const remote = window.require("electron").remote;
 const partiesDB = remote.getGlobal('partiesDB');
@@ -48,16 +47,8 @@ class PurchaseNew extends React.Component {
                     <Form onSubmit={handleSubmit(this.onSubmit)}>
                         <ModalBody>
                             <Field
-                                name="purchaseName"
-                                component={RenderInputField}
-                                type="text"
-                                placeholder="Enter Purchase"
-                                autoFocus
-                                label="Name"
-                            />
-                            <Field
                                 name="date"
-                                component={renderInputField}
+                                component={RenderInputField}
                                 type="date"
                                 placeholder="Date"
                                 label="Date"
@@ -75,7 +66,6 @@ class PurchaseNew extends React.Component {
                                 placeholder="Select Address"
                                 options={this.props.addressOptions}
                                 label="Address"
-                                plusButton={() => <PlusButton onClick={this.props.toggleNewAddressModal} />}
                             />
                             <Field
                                 name="party"
@@ -102,15 +92,14 @@ const newPurchaseForm = reduxForm({ form: 'newPurchase', validate: validatePurch
 const mapStateToProps = state => {
     return {
         addressOptions: state.address.addressOptions,
-        partyOptions: state.party.partyOptions
+        partyOptions: state.party.partyOptions,
+        storeOptions: state.store.storeOptions,
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
         toggleNewAddressModal: () => dispatch(toggleNewAddressModal),
-        fetchAddress: () => dispatch(fetchAddresses),
-        fetchParties: () => dispatch(fetchParties),
     };
 };
 

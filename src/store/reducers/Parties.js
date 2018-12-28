@@ -1,4 +1,6 @@
 const initialState = {
+    parties: [],
+    partiesOptions: [],
     partyToBeEdited: null
 };
 
@@ -8,6 +10,12 @@ const addressReducer = (state = initialState, action) => {
             return {
                 ...state,
                 partyToBeEdited: action.payload
+            }
+        case "FETCH_PARTIES":
+            return {
+                ...state,
+                parties: action.payload.parties,
+                partyOptions: action.payload.partyOptions,
             }
         default:
             return state;

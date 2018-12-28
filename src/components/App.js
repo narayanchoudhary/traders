@@ -11,11 +11,15 @@ import NewAddress from './AddressNew';
 import NewStore from './StoreNew';
 import Purchases from './Purchases';
 import { fetchAddresses } from '../store/actions/Addresses';
+import { fetchStores } from '../store/actions/Stores';
+import { fetchParties } from '../store/actions/Parties';
 
 class App extends Component {
 
   componentDidMount() {
     this.props.fetchAddresses();
+    this.props.fetchStores();
+    this.props.fetchParties();
   }
 
   render() {
@@ -46,6 +50,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     fetchAddresses: () => dispatch(fetchAddresses),
+    fetchStores: () => dispatch(fetchStores),
+    fetchParties: () => dispatch(fetchParties()),
   }
 }
 
