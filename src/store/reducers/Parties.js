@@ -1,7 +1,8 @@
 const initialState = {
     parties: [],
     partiesOptions: [],
-    partyToBeEdited: null
+    partyToBeEdited: null,
+    isNewPartyModalOpen: false,
 };
 
 const addressReducer = (state = initialState, action) => {
@@ -16,6 +17,11 @@ const addressReducer = (state = initialState, action) => {
                 ...state,
                 parties: action.payload.parties,
                 partyOptions: action.payload.partyOptions,
+            }
+        case "TOGGLE_NEW_PARTY_MODAL":
+            return {
+                ...state,
+                isNewPartyModalOpen: !state.isNewPartyModalOpen
             }
         default:
             return state;

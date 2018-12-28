@@ -3,7 +3,6 @@ import ReactTable from "react-table";
 import { Container, Button } from "reactstrap";
 import PageHeading from './PageHeading';
 import classes from '../css/Parties.module.css';
-import PartyNew from './PartyNew';
 import PartyEdit from './PartyEdit';
 import { connect } from 'react-redux';
 import { fetchAddresses } from '../store/actions/Addresses';
@@ -12,6 +11,7 @@ import { faEdit } from '@fortawesome/free-solid-svg-icons'
 import { faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import DeleteConfirmation from './DeleteConfirmation';
+import { toggleNewPartyModal } from '../store/actions/Parties';
 
 library.add(faEdit);
 library.add(faTrash);
@@ -24,17 +24,10 @@ const addressesDB = remote.getGlobal('addressesDB');
 class Parties extends Component {
     state = {
         parties: [],
-        isModalOpen: false, // New Party Modal
         isDeleteConfirmationModalOpen: false,
         isPartyEditModalOpen: false,
         partyIdToBeDeleted: null,
         partyIdToBeEdited: null
-    }
-
-    toggle = () => {
-        this.setState({
-            isModalOpen: !this.state.isModalOpen
-        });
     }
 
     handleDelete = (partyId) => {
@@ -153,12 +146,7 @@ class Parties extends Component {
                             defaultPageSize={10}
                             className="-striped -highlight"
                         />
-                        <Button autoFocus outline className="mt-2" block color="primary" onClick={this.toggle} >New Party</Button>
-                        <PartyNew
-                            isModalOpen={this.state.isModalOpen}
-                            toggle={this.toggle}
-                            getParties={this.getParties}
-                        />
+                        <Button autoFocus outline className="mt-2" block color="primary" onClick={this.props.toggleNewPartyModal} >New Party</Button>
                         <DeleteConfirmation
                             isModalOpen={this.state.isDeleteConfirmationModalOpen}
                             toggle={this.toggleDeleteConfirmationModal}
@@ -186,7 +174,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        fetchAddresses: () => dispatch(fetchAddresses)
+        fetchAddresses: () => dispatch(fetchAddresses),
+        toggleNewPartyModal: () => dispatch(toggleNewPartyModal)
     };
 };
 

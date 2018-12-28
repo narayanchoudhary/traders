@@ -1,25 +1,25 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form } from 'reactstrap';
 import { Field, reduxForm, SubmissionError } from 'redux-form';
 import RenderSelectField from './RenderSelectField';
 import RenderInputField from './RenderInputField';
 import { toggleNewAddressModal } from '../store/actions/Addresses';
-import { fetchParties } from '../store/actions/Parties';
+import { toggleNewPartyModal } from '../store/actions/Parties';
 import { connect } from 'react-redux';
 import PlusButton from './PlusButton';
 import { validatePurchase } from '../utils';
+import classes from '../css/PartyNew.module.css';
 
 const remote = window.require("electron").remote;
 const partiesDB = remote.getGlobal('partiesDB');
 
-class PurchaseNew extends React.Component {
+class PurchaseNew extends Component {
     onSubmit = (values) => {
         return new Promise((resolve, reject) => {
             partiesDB.findOne({ purchaseName: values.purchaseName.toLowerCase(), address: values.address.value }, (err, purchase) => {
                 if (purchase === null) {
                     partiesDB.insert({ purchaseName: values.purchaseName.toLowerCase(), address: values.address.value }, (err, newDoc) => {
                         this.props.toggle();
-                        this.props.getParties();
                         this.props.reset();
                         this.props.destroy();
                         resolve();
@@ -73,7 +73,7 @@ class PurchaseNew extends React.Component {
                                 placeholder="Select Party"
                                 options={this.props.partyOptions}
                                 label="Party"
-                                plusButton={() => <PlusButton onClick={this.props.toggleNewAddressModal} />}
+                                plusButton={() => <PlusButton onClick={this.props.toggleNewPartyModal} />}
                             />
                         </ModalBody>
                         <ModalFooter>
@@ -100,6 +100,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         toggleNewAddressModal: () => dispatch(toggleNewAddressModal),
+        toggleNewPartyModal: () => dispatch(toggleNewPartyModal)
     };
 };
 

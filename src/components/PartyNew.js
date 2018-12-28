@@ -1,23 +1,24 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form } from 'reactstrap';
 import { Field, reduxForm, SubmissionError } from 'redux-form';
 import RenderSelectField from './RenderSelectField';
 import RenderInputField from './RenderInputField';
-import { toggleNewAddressModal, fetchAddresses } from '../store/actions/Addresses';
+import { toggleNewAddressModal } from '../store/actions/Addresses';
 import { connect } from 'react-redux';
 import PlusButton from './PlusButton';
 import { validateParty } from '../utils';
+import { toggleNewPartyModal, fetchParties } from '../store/actions/Parties';
 const remote = window.require("electron").remote;
 const partiesDB = remote.getGlobal('partiesDB');
 
-class PartyNew extends React.Component {
+class PartyNew extends Component {
     onSubmit = (values) => {
         return new Promise((resolve, reject) => {
             partiesDB.findOne({ partyName: values.partyName.toLowerCase(), address: values.address.value }, (err, party) => {
                 if (party === null) {
                     partiesDB.insert({ partyName: values.partyName.toLowerCase(), address: values.address.value }, (err, newDoc) => {
-                        this.props.toggle();
-                        this.props.getParties();
+                        this.props.toggleNewPartyModal();
+                        this.props.fetchParties();
                         this.props.reset();
                         this.props.destroy();
                         resolve();
@@ -40,8 +41,8 @@ class PartyNew extends React.Component {
         const { handleSubmit, submitting } = this.props;
         return (
             <div>
-                <Modal fade={true} isOpen={this.props.isModalOpen} toggle={this.props.toggle} centered autoFocus={false} >
-                    <ModalHeader toggle={this.props.toggle}>New Party</ModalHeader>
+                <Modal fade={true} isOpen={this.props.isModalOpen} toggle={this.props.toggleNewPartyModal} centered autoFocus={false} >
+                    <ModalHeader toggle={this.props.toggleNewPartyModal}>New Party</ModalHeader>
                     <Form onSubmit={handleSubmit(this.onSubmit)}>
                         <ModalBody>
                             <Field
@@ -63,7 +64,7 @@ class PartyNew extends React.Component {
                         </ModalBody>
                         <ModalFooter>
                             <Button color="success" type="submit" disabled={submitting} >Save</Button>{' '}
-                            <Button color="secondary" onClick={this.props.toggle}>Cancel</Button>
+                            <Button color="secondary" onClick={this.props.toggleNewPartyModal}>Cancel</Button>
                         </ModalFooter>
                     </Form>
                 </Modal>
@@ -76,14 +77,16 @@ const newPartyForm = reduxForm({ form: 'newParty', validate: validateParty })(Pa
 
 const mapStateToProps = state => {
     return {
-        addressOptions: state.address.addressOptions
+        addressOptions: state.address.addressOptions,
+        isModalOpen: state.party.isNewPartyModalOpen,
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
         toggleNewAddressModal: () => dispatch(toggleNewAddressModal),
-        fetchAddress: () => dispatch(fetchAddresses)
+        toggleNewPartyModal: () => dispatch(toggleNewPartyModal),
+        fetchParties: () => dispatch(fetchParties()),
     };
 };
 

@@ -3,6 +3,7 @@ import { Container, Button } from "reactstrap";
 import PageHeading from "./PageHeading";
 import ReactTable from "react-table";
 import PurchaseNew from "./PurchaseNew";
+import { connect } from "react-redux";
 
 class Purchases extends Component {
 
@@ -77,4 +78,16 @@ class Purchases extends Component {
     }
 }
 
-export default Purchases;
+const mapStateToProps = state => {
+    return {
+
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Purchases);

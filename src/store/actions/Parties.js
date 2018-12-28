@@ -27,7 +27,6 @@ export const fetchParties = (thenCallback) => {
                 });
             });
 
-            console.log('partiesOptions: ', partyOptions);
             dispatch({
                 type: "FETCH_PARTIES",
                 payload: { parties, partyOptions }
@@ -35,4 +34,11 @@ export const fetchParties = (thenCallback) => {
             thenCallback && thenCallback();
         });
     }
+}
+
+export const toggleNewPartyModal = (dispatch) => {
+    dispatch({
+        type:"TOGGLE_NEW_PARTY_MODAL",
+        payload: {}
+    });
 }
