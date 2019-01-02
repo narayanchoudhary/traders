@@ -18,27 +18,39 @@ export const fetchParty = (partyId, thenCallback) => {
 
 export const fetchParties = (thenCallback) => {
     return (dispatch) => {
-        partiesDB.find({}, (err, parties) => {
-            let partyOptions = [];
-            parties.forEach(party => {
-                partyOptions.push({
-                    value: party._id,
-                    label: party.partyName,
-                });
-            });
+        partiesDB.find({}).sort({ createdAt: -1 }).exec((err, parties) => {
+            addressesDB.find({}, (err, addresses) => {
 
-            dispatch({
-                type: "FETCH_PARTIES",
-                payload: { parties, partyOptions }
+                let partyOptions = [];
+                let partiesWithAddress = [];
+                parties.forEach(party => {
+                    addresses.forEach(address => {
+                        if (party.address === address._id) {
+                            partiesWithAddress.push({ _id: party._id, partyName: party.partyName, address: address.address });
+                        }
+                    });
+                });
+
+                parties.forEach(party => {
+                    partyOptions.push({
+                        value: party._id,
+                        label: party.partyName,
+                    });
+                });
+
+                dispatch({
+                    type: "FETCH_PARTIES",
+                    payload: { partiesWithAddress, partyOptions }
+                });
+                thenCallback && thenCallback();
             });
-            thenCallback && thenCallback();
         });
     }
 }
 
 export const toggleNewPartyModal = (dispatch) => {
     dispatch({
-        type:"TOGGLE_NEW_PARTY_MODAL",
+        type: "TOGGLE_NEW_PARTY_MODAL",
         payload: {}
     });
 }

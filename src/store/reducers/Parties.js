@@ -1,11 +1,11 @@
 const initialState = {
-    parties: [],
+    partiesWithAddress: [],
     partiesOptions: [],
     partyToBeEdited: null,
     isNewPartyModalOpen: false,
 };
 
-const addressReducer = (state = initialState, action) => {
+const partyReducer = (state = initialState, action) => {
     switch (action.type) {
         case "FETCH_PARTY_TO_BE_EDITED":
             return {
@@ -15,7 +15,7 @@ const addressReducer = (state = initialState, action) => {
         case "FETCH_PARTIES":
             return {
                 ...state,
-                parties: action.payload.parties,
+                partiesWithAddress: action.payload.partiesWithAddress,
                 partyOptions: action.payload.partyOptions,
             }
         case "TOGGLE_NEW_PARTY_MODAL":
@@ -29,4 +29,4 @@ const addressReducer = (state = initialState, action) => {
 
 }
 
-export default addressReducer;
+export default partyReducer;

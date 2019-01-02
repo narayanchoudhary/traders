@@ -6,7 +6,7 @@ const DeleteConfirmation = (props) => {
         <Modal isOpen={props.isModalOpen} toggle={props.toggle}>
             <ModalHeader toggle={props.toggle}>Are you sure?</ModalHeader>
             <ModalFooter>
-                <Button color="danger" onClick={props.onSuccess}>Delete</Button>{' '}
+                <Button color="danger" onClick={props.onSuccess}>Yes, Delete</Button>{' '}
                 <Button color="secondary" onClick={props.toggle}>Cancel</Button>
             </ModalFooter>
         </Modal>

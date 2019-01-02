@@ -5,13 +5,12 @@ import PageHeading from './PageHeading';
 import classes from '../css/Parties.module.css';
 import PartyEdit from './PartyEdit';
 import { connect } from 'react-redux';
-import { fetchAddresses } from '../store/actions/Addresses';
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faEdit } from '@fortawesome/free-solid-svg-icons'
 import { faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import DeleteConfirmation from './DeleteConfirmation';
-import { toggleNewPartyModal } from '../store/actions/Parties';
+import { toggleNewPartyModal, fetchParties } from '../store/actions/Parties';
 
 library.add(faEdit);
 library.add(faTrash);
@@ -19,7 +18,6 @@ library.add(faTrash);
 
 const remote = window.require("electron").remote;
 const partiesDB = remote.getGlobal('partiesDB');
-const addressesDB = remote.getGlobal('addressesDB');
 
 class Parties extends Component {
     state = {
@@ -48,35 +46,12 @@ class Parties extends Component {
         this.setState({ isPartyEditModalOpen: !this.state.isPartyEditModalOpen });
     }
 
-    componentDidMount() {
-        this.getParties();
-    }
-
     deleteParty = () => {
         partiesDB.remove({ _id: this.state.partyIdToBeDeleted }, {}, (err, numRemoved) => {
-            this.getParties();
+            this.props.fetchParties();
             this.toggleDeleteConfirmationModal();
         });
     }
-
-    getParties = () => {
-        partiesDB.find({}).sort({ createdAt: -1 }).exec((err, parties) => {
-            addressesDB.find({}, (err, addresses) => {
-
-                // create array of parties
-                let partiesWithAddress = [];
-                parties.forEach(party => {
-                    addresses.forEach(address => {
-                        if (party.address === address._id) {
-                            partiesWithAddress.push({ _id: party._id, partyName: party.partyName, address: address.address });
-                        }
-                    });
-                });
-                this.setState({ ...this.state, parties: partiesWithAddress })
-            });
-        });
-    }
-
 
     renderActionColumn = (row) => {
         return (
@@ -94,7 +69,7 @@ class Parties extends Component {
                 <div className="d-flex justify-content-center align-parties-center">
                     <div>
                         <ReactTable
-                            data={this.state.parties}
+                            data={this.props.partiesWithAddress}
                             columns={[
                                 {
                                     Header: "Party",
@@ -168,14 +143,15 @@ class Parties extends Component {
 const mapStateToProps = state => {
     return {
         addresses: state.address.addresses,
-        addressOptions: state.address.addressOptions
+        addressOptions: state.address.addressOptions,
+        partiesWithAddress: state.party.partiesWithAddress,
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        fetchAddresses: () => dispatch(fetchAddresses),
-        toggleNewPartyModal: () => dispatch(toggleNewPartyModal)
+        toggleNewPartyModal: () => dispatch(toggleNewPartyModal),
+        fetchParties: () => dispatch(fetchParties())
     };
 };
 
