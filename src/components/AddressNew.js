@@ -1,29 +1,11 @@
-import React, { Fragment, Component } from 'react';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label, Input, FormFeedback, FormText } from 'reactstrap';
+import React, { Component } from 'react';
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup } from 'reactstrap';
 import { Field, reduxForm } from 'redux-form';
-import classes from '../css/AddressNew.module.css';
 import { connect } from 'react-redux';
 import { toggleNewAddressModal, fetchAddresses } from '../store/actions/Addresses';
+import RenderInputField from './RenderInputField';
 const remote = window.require("electron").remote;
 const addressesDB = remote.getGlobal('addressesDB');
-
-const renderField = ({ input, label, type, autoFocus, meta: { touched, invalid, valid, error } }) => {
-    return (
-        <Fragment>
-            <Label>{label}</Label>
-            <Input
-                {...input}
-                type={type}
-                autoFocus={autoFocus}
-                invalid={touched && invalid}
-                valid={touched && valid}
-                className={classes.newAddressInput}
-            />
-            {(error && <FormFeedback>{error}</FormFeedback>)}
-            <FormText>Enter address</FormText>
-        </Fragment>
-    )
-}
 
 const validate = values => {
     const errors = {}
@@ -57,7 +39,7 @@ class AddressNew extends Component {
                             <FormGroup>
                                 <Field
                                     name="address"
-                                    component={renderField}
+                                    component={RenderInputField}
                                     type="text"
                                     placeholder="Enter Address"
                                     lebel="Address"

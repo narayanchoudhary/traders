@@ -2,10 +2,10 @@ import React from 'react';
 import { Label, Input, FormFeedback, FormGroup } from 'reactstrap';
 import classes from '../css/renderInputField.module.css';
 
-const renderInputField = ({ input, label, type, autoFocus, placeholder, meta: { touched, invalid, valid, error } }) => {
+const renderInputField = ({ input, label, type, autoFocus, placeholder, className, meta: { touched, invalid, valid, error } }) => {
     return (
-        <FormGroup>
-            <Label>{label}</Label>
+        <FormGroup className={className}>
+            {label && <Label>{label}</Label>}
             <Input
                 {...input}
                 type={type}

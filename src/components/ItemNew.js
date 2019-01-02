@@ -1,27 +1,11 @@
-import React, { Fragment } from 'react';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label, Input, FormFeedback, FormText } from 'reactstrap';
+import React, { Component } from 'react';
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup } from 'reactstrap';
 import { Field, reduxForm } from 'redux-form';
-import classes from '../css/ItemNew.module.css';
+import { connect } from 'react-redux';
+import { toggleNewItemModal, fetchItems } from '../store/actions/Items';
+import RenderInputField from './RenderInputField';
 const remote = window.require("electron").remote;
 const itemsDB = remote.getGlobal('itemsDB');
-
-const renderField = ({ input, label, type, autoFocus, meta: { touched, invalid, valid, error } }) => {
-    return (
-        <Fragment>
-            <Label>{label}</Label>
-            <Input
-                {...input}
-                type={type}
-                autoFocus={autoFocus}
-                invalid={touched && invalid}
-                valid={touched && valid}
-                className={classes.newItemInput}
-            />
-            {(error && <FormFeedback>{error}</FormFeedback>)}
-            <FormText>Enter item</FormText>
-        </Fragment>
-    )
-}
 
 const validate = values => {
     const errors = {}
@@ -33,16 +17,15 @@ const validate = values => {
     return errors
 }
 
-
-class ItemNew extends React.Component {
+class ItemNew extends Component {
 
     onSubmit = (values) => {
-        itemsDB.insert({ item: values.item.toLowerCase() }, (err, newDoc) => {
+        itemsDB.insert({ itemName: values.itemName.toLowerCase() }, (err, newDoc) => {
             this.props.toggle();
-            this.props.getItems();
+            this.props.fetchItems();
         });
         this.props.reset();
-        this.props.destroy(); 
+        this.props.destroy();
     }
 
     render() {
@@ -55,8 +38,8 @@ class ItemNew extends React.Component {
                         <ModalBody>
                             <FormGroup>
                                 <Field
-                                    name="item"
-                                    component={renderField}
+                                    name="itemName"
+                                    component={RenderInputField}
                                     type="text"
                                     placeholder="Enter Item"
                                     lebel="Item"
@@ -75,7 +58,19 @@ class ItemNew extends React.Component {
     }
 }
 
-export default reduxForm({
-    form: 'newItem',
-    validate  // a unique identifier for this form
-})(ItemNew)
+const newItemForm = reduxForm({ form: 'newItem', validate })(ItemNew);
+
+const mapStateToProps = state => {
+    return {
+        isModalOpen: state.item.isNewItemModalOpen,
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        toggle: () => dispatch(toggleNewItemModal),
+        fetchItems: () => dispatch(fetchItems)
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(newItemForm);

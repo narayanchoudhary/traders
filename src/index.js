@@ -12,6 +12,7 @@ import { reducer as formReducer } from 'redux-form';
 import addressesReducer from './store/reducers/Addresses';
 import partiesReducer from './store/reducers/Parties';
 import storesReducer from './store/reducers/Stores';
+import itemsReducer from './store/reducers/Items';
 
     let store = createStore(
         combineReducers({
@@ -19,6 +20,7 @@ import storesReducer from './store/reducers/Stores';
             address: addressesReducer,
             party:   partiesReducer,
             store:   storesReducer,
+            item:    itemsReducer,
         }),
         applyMiddleware(thunk)
     );

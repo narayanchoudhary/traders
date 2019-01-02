@@ -10,10 +10,12 @@ import Header from './Header';
 import NewAddress from './AddressNew';
 import NewStore from './StoreNew';
 import NewParty from './PartyNew';
+import NewItem from './ItemNew';
 import Purchases from './Purchases';
 import { fetchAddresses } from '../store/actions/Addresses';
 import { fetchStores } from '../store/actions/Stores';
 import { fetchParties } from '../store/actions/Parties';
+import { fetchItems } from '../store/actions/Items';
 
 class App extends Component {
 
@@ -21,6 +23,7 @@ class App extends Component {
     this.props.fetchAddresses();
     this.props.fetchStores();
     this.props.fetchParties();
+    this.props.fetchItems();
   }
 
   render() {
@@ -30,6 +33,7 @@ class App extends Component {
         <NewAddress />
         <NewStore />
         <NewParty />
+        <NewItem />
         <Switch>
           <Route exact={true} path='/' component={Home} />
           <Route path='/masters/parties' component={Parties} />
@@ -54,6 +58,7 @@ const mapDispatchToProps = dispatch => {
     fetchAddresses: () => dispatch(fetchAddresses),
     fetchStores: () => dispatch(fetchStores),
     fetchParties: () => dispatch(fetchParties()),
+    fetchItems: () => dispatch(fetchItems),
   }
 }
 

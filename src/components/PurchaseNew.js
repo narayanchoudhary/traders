@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form } from 'reactstrap';
-import { Field, reduxForm, SubmissionError } from 'redux-form';
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, Row } from 'reactstrap';
+import { Field, FieldArray, reduxForm, SubmissionError } from 'redux-form';
 import RenderSelectField from './RenderSelectField';
 import RenderInputField from './RenderInputField';
 import { toggleNewAddressModal } from '../store/actions/Addresses';
@@ -8,10 +8,11 @@ import { toggleNewPartyModal } from '../store/actions/Parties';
 import { connect } from 'react-redux';
 import PlusButton from './PlusButton';
 import { validatePurchase } from '../utils';
-import classes from '../css/PartyNew.module.css';
+import RenderLotsFieldArray from './RenderLotsFieldArray';
 
 const remote = window.require("electron").remote;
 const partiesDB = remote.getGlobal('partiesDB');
+
 
 class PurchaseNew extends Component {
     onSubmit = (values) => {
@@ -42,39 +43,49 @@ class PurchaseNew extends Component {
         const { handleSubmit, submitting } = this.props;
         return (
             <div>
-                <Modal fade={true} isOpen={this.props.isModalOpen} toggle={this.props.toggle} centered autoFocus={false} >
+                <Modal size="lg" fade={true} isOpen={this.props.isModalOpen} toggle={this.props.toggle} centered autoFocus={false} >
                     <ModalHeader toggle={this.props.toggle}>New Purchase</ModalHeader>
                     <Form onSubmit={handleSubmit(this.onSubmit)}>
                         <ModalBody>
-                            <Field
-                                name="date"
-                                component={RenderInputField}
-                                type="date"
-                                placeholder="Date"
-                                label="Date"
-                            />
-                            <Field
-                                name="store"
-                                component={RenderSelectField}
-                                placeholder="Select Store"
-                                options={this.props.storeOptions}
-                                label="Store"
-                            />
-                            <Field
-                                name="address"
-                                component={RenderSelectField}
-                                placeholder="Select Address"
-                                options={this.props.addressOptions}
-                                label="Address"
-                            />
-                            <Field
-                                name="party"
-                                component={RenderSelectField}
-                                placeholder="Select Party"
-                                options={this.props.partyOptions}
-                                label="Party"
-                                plusButton={() => <PlusButton onClick={this.props.toggleNewPartyModal} />}
-                            />
+                            <Row form>
+                                <Field
+                                    name="store"
+                                    component={RenderSelectField}
+                                    placeholder="Select Store"
+                                    options={this.props.storeOptions}
+                                    label="Store"
+                                    className="col"
+                                />
+                                <Field
+                                    name="date"
+                                    component={RenderInputField}
+                                    type="date"
+                                    placeholder="Date"
+                                    label="Date"
+                                    className="col"
+                                    autoFocus
+                                />
+                                <Field
+                                    name="address"
+                                    component={RenderSelectField}
+                                    placeholder="Select Address"
+                                    options={this.props.addressOptions}
+                                    label="Address"
+                                    className="col"
+                                />
+                            </Row>
+                            <Row form>
+                                <Field
+                                    name="party"
+                                    component={RenderSelectField}
+                                    placeholder="Select Party"
+                                    options={this.props.partyOptions}
+                                    label="Party"
+                                    plusButton={() => <PlusButton onClick={this.props.toggleNewPartyModal} />}
+                                    className="col-md-6 m-auto"
+                                />
+                            </Row>
+                            <FieldArray name="members" component={RenderLotsFieldArray} />
                         </ModalBody>
                         <ModalFooter>
                             <Button color="success" type="submit" disabled={submitting} >Save</Button>{' '}
@@ -94,6 +105,7 @@ const mapStateToProps = state => {
         addressOptions: state.address.addressOptions,
         partyOptions: state.party.partyOptions,
         storeOptions: state.store.storeOptions,
+        itemOptions: state.item.itemOptions,
     }
 }
 

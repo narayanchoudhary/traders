@@ -3,19 +3,16 @@ import ReactTable from "react-table";
 import { Container, Button } from "reactstrap";
 import PageHeading from './PageHeading';
 import classes from '../css/Items.module.css';
-import ItemNew from './ItemNew';
+import { toggleNewItemModal, fetchItems } from '../store/actions/Items';
+import { connect } from 'react-redux';
 const remote = window.require("electron").remote;
 const itemsDB = remote.getGlobal('itemsDB');
 
 class Items extends Component {
-    state = {
-        items: [],
-        isModalOpen: false // New Item Modal
-    }
 
     handleDelete(id) {
         itemsDB.remove({ _id: id }, {}, (err, numRemoved) => {
-            this.getItems();
+            this.props.fetchItems();
         });
     }
 
@@ -26,8 +23,8 @@ class Items extends Component {
     }
 
     handleEdit = (id, value) => {
-        itemsDB.update({ _id: id }, { item: value }, () => {
-            this.getItems();
+        itemsDB.update({ _id: id }, { itemName: value }, () => {
+            this.props.fetchItems();
         });
     }
 
@@ -38,14 +35,9 @@ class Items extends Component {
                     className={classes.renderEditable}
                     contentEditable
                     suppressContentEditableWarning
-                    onBlur={e => {
-                        const items = [...this.state.items];
-                        items[cellInfo.index][cellInfo.column.id] = e.target.innerHTML;
-                        this.setState({ items });
-                        this.handleEdit(cellInfo.row._id, e.target.innerHTML);
-                    }}
+                    onBlur={e => this.handleEdit(cellInfo.row._id, e.target.innerHTML)}
                     dangerouslySetInnerHTML={{
-                        __html: this.state.items[cellInfo.index][cellInfo.column.id]
+                        __html: this.props.items[cellInfo.index][cellInfo.column.id]
                     }}
                 />
                 <Button className={classes.deleteButton} close onClick={() => this.handleDelete(cellInfo.row._id)} ></Button>
@@ -54,13 +46,7 @@ class Items extends Component {
     }
 
     componentDidMount() {
-        this.getItems();
-    }
-
-    getItems = () => {
-        itemsDB.find({}).sort({ createdAt: -1 }).exec((err, items) => {
-            this.setState({ ...this.state, items: items })
-        });
+        this.props.fetchItems();
     }
 
     render() {
@@ -70,11 +56,11 @@ class Items extends Component {
                 <div className="d-flex justify-content-center align-items-center">
                     <div>
                         <ReactTable
-                            data={this.state.items}
+                            data={this.props.items}
                             columns={[
                                 {
                                     Header: "Item",
-                                    accessor: "item",
+                                    accessor: "itemName",
                                     Cell: this.renderEditable,
                                     filterable: true,
                                     filterMethod: (filter, row) => {
@@ -95,12 +81,7 @@ class Items extends Component {
                             defaultPageSize={10}
                             className="-striped -highlight"
                         />
-                        <Button autoFocus outline className="mt-2" block color="primary" onClick={this.toggle} >New Item</Button>
-                        <ItemNew
-                            isModalOpen={this.state.isModalOpen}
-                            toggle={this.toggle}
-                            getItems={this.getItems}
-                        />
+                        <Button autoFocus outline className="mt-2" block color="primary" onClick={this.props.toggleNewItemModal} >New Item</Button>
                     </div>
                 </div>
             </Container>
@@ -108,4 +89,17 @@ class Items extends Component {
     }
 }
 
-export default Items;
+const mapStateToProps = state => {
+    return {
+        items: state.item.items,
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        toggleNewItemModal: () => dispatch(toggleNewItemModal),
+        fetchItems: () => dispatch(fetchItems)
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Items);

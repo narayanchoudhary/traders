@@ -3,10 +3,10 @@ import React from 'react';
 import { Label, FormFeedback, FormGroup } from 'reactstrap';
 import classes from '../css/RenderSelectField.module.css';
 
-const renderSelectField = ({ input, label, type, options, plusButton, meta: { touched, invalid, valid, error } }) => {
+const renderSelectField = ({ input, label, type, options, plusButton, className, meta: { touched, invalid, valid, error } }) => {
     return (
-        <FormGroup>
-            <Label>{label}</Label>
+        <FormGroup className={className}>
+            {label && <Label>{label}</Label>}
             <div className={classes.selectWrapper}>
                 <ReactSelect
                     value={input.value}

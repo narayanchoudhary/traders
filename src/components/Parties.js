@@ -81,8 +81,8 @@ class Parties extends Component {
     renderActionColumn = (row) => {
         return (
             <div className={classes.actionColumnWrapper}>
-                <FontAwesomeIcon icon="edit" color="green" onClick={() => this.handleEdit(row.row._id)} className={classes.pointer} />
-                <FontAwesomeIcon icon="trash" color="red" onClick={() => this.handleDelete(row.row._id)} className={classes.pointer} />
+                <FontAwesomeIcon icon="edit" color="green" onClick={() => this.handleEdit(row.row._id)} className="pointer" />
+                <FontAwesomeIcon icon="trash" color="red" onClick={() => this.handleDelete(row.row._id)} className="pointer" />
             </div>
         );
     }

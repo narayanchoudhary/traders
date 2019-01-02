@@ -9,3 +9,7 @@ body {
 .ReactTable .rt-thead {
   overflow-y: scroll;
 }
+
+.pointer {
+  cursor: pointer;
+}
