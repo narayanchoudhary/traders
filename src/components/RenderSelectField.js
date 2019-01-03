@@ -3,7 +3,7 @@ import React from 'react';
 import { Label, FormFeedback, FormGroup } from 'reactstrap';
 import classes from '../css/RenderSelectField.module.css';
 
-const renderSelectField = ({ input, label, type, options, plusButton, className, meta: { touched, invalid, valid, error } }) => {
+const renderSelectField = ({ input, label, type, options, plusButton, className, placeholder, meta: { touched, invalid, valid, error } }) => {
     return (
         <FormGroup className={className}>
             {label && <Label>{label}</Label>}
@@ -15,6 +15,7 @@ const renderSelectField = ({ input, label, type, options, plusButton, className,
                     type={type}
                     options={options}
                     className={classes.reactSelectField}
+                    placeholder={placeholder}
                 />
                 {plusButton && plusButton()}
             </div>

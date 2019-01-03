@@ -1,4 +1,6 @@
 {"address":"orangpura","_id":"3up27O0Mw0MKSPmS","createdAt":{"$$date":1545742223940},"updatedAt":{"$$date":1545742223940}}
+{"address":"galonda","_id":"3vcFCEpehRmcwQaM","createdAt":{"$$date":1546428386377},"updatedAt":{"$$date":1546428386377}}
+{"address":"dharnavad","_id":"61DXG3cQ2iYa9zun","createdAt":{"$$date":1546428940483},"updatedAt":{"$$date":1546428940483}}
 {"address":"fulkaradiya","_id":"6tnNT8Laco1dt50g","createdAt":{"$$date":1545742465456},"updatedAt":{"$$date":1545823852513}}
 {"address":"talavali","_id":"F6c3RPF39XnQtQeR","createdAt":{"$$date":1546016198996},"updatedAt":{"$$date":1546016198996}}
 {"address":"dharawara","_id":"FKPFZL1Jvd58BNEA","createdAt":{"$$date":1545586509069},"updatedAt":{"$$date":1545586509069}}
@@ -6,12 +8,11 @@
 {"address":"vyaskhedi","_id":"KOcH3g5jgcKeEs7u","createdAt":{"$$date":1545742252531},"updatedAt":{"$$date":1545744140173}}
 {"address":"bhilkhedi","_id":"MNQwxKIG7O5oakJ6","createdAt":{"$$date":1545742299765},"updatedAt":{"$$date":1545742299765}}
 {"address":"khatipiplya","_id":"TPd9V9GMDfMDrHDB","createdAt":{"$$date":1545993530636},"updatedAt":{"$$date":1545993530636}}
+{"address":"patada","_id":"VE5WMKVZ8fg87IJk","createdAt":{"$$date":1546428478338},"updatedAt":{"$$date":1546428478338}}
 {"address":"navdapanth","_id":"W81Te1EmpaVWVbud","createdAt":{"$$date":1546014066293},"updatedAt":{"$$date":1546014066293}}
 {"address":"dhannad","_id":"WYemJsYXNlL5ILfA","createdAt":{"$$date":1545586787601},"updatedAt":{"$$date":1545586787601}}
+{"address":"sindoda","_id":"XW5VoZCG7Njjuz1G","createdAt":{"$$date":1546430331506},"updatedAt":{"$$date":1546430331506}}
 {"address":"narlay","_id":"mqkwCLsTYV0lGIv8","createdAt":{"$$date":1545810252722},"updatedAt":{"$$date":1545823851014}}
 {"address":"dakachya","_id":"rKPCnNPRoX3TK83g","createdAt":{"$$date":1545742344123},"updatedAt":{"$$date":1545744141423}}
 {"address":"rau","_id":"tDPCIGQi6z724u9M","createdAt":{"$$date":1545643466864},"updatedAt":{"$$date":1545744152659}}
-{"address":"galonda","_id":"3vcFCEpehRmcwQaM","createdAt":{"$$date":1546428386377},"updatedAt":{"$$date":1546428386377}}
-{"address":"patada","_id":"VE5WMKVZ8fg87IJk","createdAt":{"$$date":1546428478338},"updatedAt":{"$$date":1546428478338}}
-{"address":"dharnavad","_id":"61DXG3cQ2iYa9zun","createdAt":{"$$date":1546428940483},"updatedAt":{"$$date":1546428940483}}
-{"address":"sindoda","_id":"XW5VoZCG7Njjuz1G","createdAt":{"$$date":1546430331506},"updatedAt":{"$$date":1546430331506}}
+{"address":"galonda","_id":"3vcFCEpehRmcwQaM","createdAt":{"$$date":1546428386377},"updatedAt":{"$$date":1546510447675}}

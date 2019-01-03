@@ -64,6 +64,21 @@ const RenderLotsFieldArray = (props) => {
                                 placeholder="Amount"
                                 className="col"
                             />
+                            <Field
+                                name={`${lot}.hammal`}
+                                component={RenderSelectField}
+                                placeholder="Hammal"
+                                options={props.itemOptions}
+                                className="col"
+                            />
+                            <Field
+                                name={`${lot}.hammali`}
+                                type="number"
+                                component={RenderInputField}
+                                placeholder="Hammali"
+                                className="col"
+                            />
+
                             <Col className="d-flex justify-content-center align-items-center form-group">
                                 <FontAwesomeIcon
                                     icon="trash"

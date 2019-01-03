@@ -43,7 +43,7 @@ class PurchaseNew extends Component {
         const { handleSubmit, submitting } = this.props;
         return (
             <div>
-                <Modal size="lg" fade={true} isOpen={this.props.isModalOpen} toggle={this.props.toggle} centered autoFocus={false} >
+                <Modal className="modal-xl" fade={true} isOpen={this.props.isModalOpen} toggle={this.props.toggle} centered autoFocus={false} >
                     <ModalHeader toggle={this.props.toggle}>New Purchase</ModalHeader>
                     <Form onSubmit={handleSubmit(this.onSubmit)}>
                         <ModalBody>
@@ -73,8 +73,6 @@ class PurchaseNew extends Component {
                                     label="Address"
                                     className="col"
                                 />
-                            </Row>
-                            <Row form>
                                 <Field
                                     name="party"
                                     component={RenderSelectField}
@@ -82,8 +80,10 @@ class PurchaseNew extends Component {
                                     options={this.props.partyOptions}
                                     label="Party"
                                     plusButton={() => <PlusButton onClick={this.props.toggleNewPartyModal} />}
-                                    className="col-md-6 m-auto"
+                                    className="col"
                                 />
+                            </Row>
+                            <Row form>
                             </Row>
                             <FieldArray name="members" component={RenderLotsFieldArray} />
                         </ModalBody>
