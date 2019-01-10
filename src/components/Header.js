@@ -70,6 +70,9 @@ export default class Header extends React.Component {
                                     <DropdownItem tag={RRNavLink} to="/masters/stores">
                                         Store
                                     </DropdownItem>
+                                    <DropdownItem tag={RRNavLink} to="/masters/hammals">
+                                        Hammal
+                                    </DropdownItem>
                                     <DropdownItem divider />
                                     <DropdownItem>
                                         Reset

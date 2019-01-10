@@ -68,7 +68,7 @@ const RenderLotsFieldArray = (props) => {
                                 name={`${lot}.hammal`}
                                 component={RenderSelectField}
                                 placeholder="Hammal"
-                                options={props.itemOptions}
+                                options={props.hammalOptions}
                                 className="col"
                             />
                             <Field
@@ -98,6 +98,7 @@ const RenderLotsFieldArray = (props) => {
 const mapStateToProps = state => {
     return {
         itemOptions: state.item.itemOptions,
+        hammalOptions: state.hammal.hammalOptions,
     }
 }
 

@@ -13,6 +13,7 @@ import addressesReducer from './store/reducers/Addresses';
 import partiesReducer from './store/reducers/Parties';
 import storesReducer from './store/reducers/Stores';
 import itemsReducer from './store/reducers/Items';
+import hammalReducer from './store/reducers/Hammals';
 
     let store = createStore(
         combineReducers({
@@ -21,6 +22,7 @@ import itemsReducer from './store/reducers/Items';
             party:   partiesReducer,
             store:   storesReducer,
             item:    itemsReducer,
+            hammal:  hammalReducer,
         }),
         applyMiddleware(thunk)
     );

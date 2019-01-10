@@ -16,6 +16,9 @@ import { fetchAddresses } from '../store/actions/Addresses';
 import { fetchStores } from '../store/actions/Stores';
 import { fetchParties } from '../store/actions/Parties';
 import { fetchItems } from '../store/actions/Items';
+import { fetchHammals } from '../store/actions/Hammals';
+import Hammals from './Hammals';
+import NewHammalForm from './HammalNew';
 
 class App extends Component {
 
@@ -24,6 +27,7 @@ class App extends Component {
     this.props.fetchStores();
     this.props.fetchParties();
     this.props.fetchItems();
+    this.props.fetchHammals();
   }
 
   render() {
@@ -34,12 +38,14 @@ class App extends Component {
         <NewStore />
         <NewParty />
         <NewItem />
+        <NewHammalForm />
         <Switch>
           <Route exact={true} path='/' component={Home} />
           <Route path='/masters/parties' component={Parties} />
           <Route path='/masters/addresses' component={Addresses} />
           <Route path='/masters/items' component={Items} />
           <Route path='/masters/stores' component={Stores} />
+          <Route path='/masters/hammals' component={Hammals} />
           <Route path='/purchases' component={Purchases} />
         </Switch>
       </Fragment>
@@ -59,6 +65,7 @@ const mapDispatchToProps = dispatch => {
     fetchStores: () => dispatch(fetchStores),
     fetchParties: () => dispatch(fetchParties()),
     fetchItems: () => dispatch(fetchItems),
+    fetchHammals: () => dispatch(fetchHammals),
   }
 }
 

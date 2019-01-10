@@ -6,6 +6,7 @@ global.addressesDB = new Datastore({ filename: 'database/addresses', autoload: t
 global.itemsDB = new Datastore({ filename: 'database/items', autoload: true, timestampData: true });
 global.partiesDB = new Datastore({ filename: 'database/parties', autoload: true, timestampData: true });
 global.storesDB = new Datastore({ filename: 'database/stores', autoload: true, timestampData: true });
+global.hammalsDB = new Datastore({ filename: 'database/hammals', autoload: true, timestampData: true });
 
 
 let mainWindow;
